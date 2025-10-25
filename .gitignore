@@ -1,0 +1,85 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project Specific
+# ================
+
+# Large video files
+*.MOV
+*.mov
+*.mp4
+*.avi
+*.mkv
+*.webm
+
+# Model files (large)
+*.pth
+*.onnx
+*.h5
+*.pb
+
+# Dataset files
+data/raw/
+data/processed/
+recognition/
+test/
+*.zip
+
+# Generated outputs
+streamlit_app/uploads/
+streamlit_app/output/
+streamlit_app/plate_crops/
+streamlit_app/*.mp4
+streamlit_app/*.avi
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+*.cache
+
+# Large notebooks with outputs
+palte_rec.ipynb
+ALPR_Yolov8-ultralytics_annotation.ipynb
+
+# Environment
+.env
+.env.local
+
+GIT_SETUP.md
