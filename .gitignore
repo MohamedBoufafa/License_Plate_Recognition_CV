@@ -65,15 +65,6 @@ synthetic_plates/
 ocr_training_data/
 checkpoints/
 logs/
-docs/
-scripts/
-notebooks/
-check_repo.sh
-DEPLOYMENT_GUIDE.md
-REPO_ORGANIZATION.md
-GITHUB_PUSH_GUIDE.md
-QUICKSTART.md
-README_old.md
 
 # Large models (upload to GitHub Releases)
 license_plate_best.pt
