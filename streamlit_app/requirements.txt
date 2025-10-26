@@ -1,0 +1,24 @@
+# Web Framework
+streamlit>=1.24.0,<2.0.0
+
+# Computer Vision
+opencv-python-headless>=4.5.0,<5.0.0
+ultralytics>=8.0.0,<9.0.0
+
+# OCR (Optional - for text recognition)
+easyocr>=1.7.0,<2.0.0
+
+# Core Dependencies
+numpy>=1.23.0,<2.0.0
+Pillow>=9.0.0,<11.0.0
+
+# Deep Learning
+# For CPU only: pip install torch torchvision
+# For CUDA 11.8: pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+# For CUDA 12.1: pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Utilities
+scipy>=1.10.0
+PyYAML>=6.0
