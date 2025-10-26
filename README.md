@@ -1,3 +1,19 @@
+---
+title: License Plate Recognition
+emoji: 🚗
+colorFrom: blue
+colorTo: green
+sdk: streamlit
+sdk_version: 1.39.0
+app_file: streamlit_app/app.py
+pinned: false
+license: mit
+---
+
+# License Plate Recognition
+
+This Space hosts a Streamlit app for license plate detection and recognition using YOLO and EasyOCR.
+
 # 🚗 License Plate Recognition System
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
