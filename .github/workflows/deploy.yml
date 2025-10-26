@@ -15,4 +15,4 @@ jobs:
           git config --global user.email "boufafa.moamed@gmail.com"
           git config --global user.name "moamedBoufafa"
           git remote add hf https://huggingface.co/spaces/moamedBoufafa/license-plate-recognition.git
-          git push --force https://moamedBoufafa:$HF_TOKEN@huggingface.co/spaces/moamedBoufafa/license-plate-recognition.git main
+          git push --force https://moamedBoufafa:$HF_TOKEN@huggingface.co/spaces/moamedBoufafa/license-plate-recognition.git master
