@@ -10,10 +10,11 @@ from ultralytics import YOLO
 
 # Import OCR module
 try:
-    from ocr_module import get_ocr_model
+    import ocr_module
+    get_ocr_model = ocr_module.get_ocr_model
     OCR_AVAILABLE = True
-except ImportError:
-    print("[Warning] OCR module not available")
+except ImportError as e:
+    print(f"[Warning] OCR module import failed: {e}")
     OCR_AVAILABLE = False
 
 # ──────────────────────────────────────────────────────────────────────────────
