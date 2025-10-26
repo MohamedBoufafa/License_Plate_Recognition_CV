@@ -775,6 +775,7 @@ def detect_video_with_tracking(
     start_time = time.time()
     detection_time = 0.0
     ocr_time = 0.0
+    ocr_count = 0  # Initialize OCR count
     
     while cap.isOpened():
         if _stopped():
@@ -1035,7 +1036,6 @@ def detect_video_with_tracking(
             status_callback("🔤 Running final OCR on best frames...")
         
         confirmed_tracks = tracker.get_confirmed_tracks_adaptive(base_min_frames=min_frames_to_confirm)
-        ocr_count = 0
         
         for track in confirmed_tracks:
             if track.best_frame_crop is not None:
