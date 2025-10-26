@@ -17,12 +17,48 @@ except ImportError:
     OCR_AVAILABLE = False
 
 # ──────────────────────────────────────────────────────────────────────────────
+# Model download helper
+
+def download_model_if_needed(model_file, url):
+    """Download model from GitHub Releases if not present"""
+    if not os.path.exists(model_file):
+        print(f"📥 Downloading {model_file} from GitHub Releases...")
+        print(f"   URL: {url}")
+        try:
+            import urllib.request
+            import ssl
+            # Bypass SSL verification if needed
+            ssl_context = ssl._create_unverified_context()
+            urllib.request.urlretrieve(url, model_file, context=ssl_context)
+            print(f"✅ Downloaded {model_file} ({os.path.getsize(model_file) / 1024 / 1024:.1f} MB)")
+        except Exception as e:
+            print(f"❌ Failed to download {model_file}: {e}")
+            print(f"   Please ensure models are uploaded to GitHub Releases:")
+            print(f"   https://github.com/MohamedBoufafa/License_Plate_Recognition_CV/releases")
+            raise RuntimeError(
+                f"Could not download {model_file}. "
+                f"Please upload models to GitHub Releases (tag: v1.0) first. "
+                f"See DEPLOYMENT_GUIDE.md for instructions."
+            )
+    else:
+        print(f"✅ Model found: {model_file} ({os.path.getsize(model_file) / 1024 / 1024:.1f} MB)")
+
+# Download models from GitHub Releases
+print("🔍 Checking for model files...")
+YOLO_MODEL_URL = "https://github.com/MohamedBoufafa/License_Plate_Recognition_CV/releases/download/v1.0/license_plate_best.pt"
+OCR_MODEL_URL = "https://github.com/MohamedBoufafa/License_Plate_Recognition_CV/releases/download/v1.0/best_ocr_model.pth"
+
+download_model_if_needed("license_plate_best.pt", YOLO_MODEL_URL)
+download_model_if_needed("best_ocr_model.pth", OCR_MODEL_URL)
+print("✅ All models ready!")
+
+# ──────────────────────────────────────────────────────────────────────────────
 # Device & models
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"PyTorch device: {device}")
 
-MODEL_PATH = os.environ.get("LPR_MODEL_PATH", "../license_plate_best.pt")
+MODEL_PATH = os.environ.get("LPR_MODEL_PATH", "license_plate_best.pt")
 model = YOLO(MODEL_PATH)
 if hasattr(model, "model"):
     model.model.to(device)
