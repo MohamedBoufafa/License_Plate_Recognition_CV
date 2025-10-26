@@ -28,9 +28,11 @@ def download_model_if_needed(model_file, url):
         try:
             import urllib.request
             import ssl
-            # Bypass SSL verification if needed
+            # Create SSL context to handle certificates
             ssl_context = ssl._create_unverified_context()
-            urllib.request.urlretrieve(url, model_file, context=ssl_context)
+            with urllib.request.urlopen(url, context=ssl_context) as response:
+                with open(model_file, 'wb') as f:
+                    f.write(response.read())
             print(f"✅ Downloaded {model_file} ({os.path.getsize(model_file) / 1024 / 1024:.1f} MB)")
         except Exception as e:
             print(f"❌ Failed to download {model_file}: {e}")
