@@ -67,10 +67,11 @@ if hasattr(model, "model"):
     model.model.to(device)
 
 # Configure NMS for faster processing
-model.overrides['max_det'] = 100  # Balance: enough for multi-plate scenes
+model.overrides['max_det'] = 50  # Reduced for CPU
 model.overrides['agnostic_nms'] = True  # Faster NMS
 model.overrides['iou'] = 0.5  # NMS IoU threshold (higher = fewer duplicates)
-model.overrides['half'] = True  # Use FP16 for faster inference on GPU
+model.overrides['half'] = False  # Disable FP16 on CPU
+model.overrides['device'] = device  # Explicit device
 
 
 
@@ -680,7 +681,7 @@ def detect_video_with_tracking(
     input_path: str,
     output_path: str,
     confidence_threshold: float = 0.47,
-    imgsz: int = 1280,  # Higher default for far plate detection
+    imgsz: int = 960,  # Optimized for CPU (was 1280)
     progress_callback: Optional[Callable[[int], None]] = None,
     status_callback: Optional[Callable[[str], None]] = None,
     should_stop=None,
@@ -689,7 +690,7 @@ def detect_video_with_tracking(
     save_crops: bool = True,
     crops_dir: Optional[str] = None,
     debug_save_all_frames: bool = False,
-    frame_interpolation_multiplier: int = 1,  # 1=off, 2=2x, 3=3x, 4=4x frames
+    frame_interpolation_multiplier: int = 1,  # Disabled by default for CPU
     enable_ocr: bool = True,  # Enable OCR
     ocr_model_path: Optional[str] = None,  # Path to OCR model
     min_frames_to_confirm: int = 3,  # Minimum frames to confirm a plate
