@@ -86,7 +86,7 @@ def main():
     
     ocr_model_path = st.sidebar.text_input(
         "OCR Model Path", 
-        value="../best_ocr_model.pth",
+        value="best_ocr_model.pth",
         help="Path to trained OCR model (best_model.pth)")
     
     if enable_ocr:
@@ -387,7 +387,7 @@ def main():
                     process_every_n_frames=frame_skip,
                     enable_processing=st.session_state.processing,
                     enable_ocr=enable_ocr_rtsp,  # OCR toggle
-                    ocr_model_path="../best_ocr_model.pth",  # OCR model path
+                    ocr_model_path="best_ocr_model.pth",  # OCR model path
                     min_frames_to_confirm=min_frames_rtsp,  # Min frames for OCR
                 ):
                     rgb = processed[:, :, ::-1]  # BGR->RGB
