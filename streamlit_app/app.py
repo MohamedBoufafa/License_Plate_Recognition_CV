@@ -149,6 +149,23 @@ def main():
                 stop_flag = Flag(value=st.session_state.stop_processing)
 
                 try:
+                    # Clean up old crops and results before processing
+                    if os.path.exists(CROPS_DIR):
+                        import shutil
+                        shutil.rmtree(CROPS_DIR)
+                        os.makedirs(CROPS_DIR, exist_ok=True)
+                        st.info("🧹 Cleared previous results...")
+                    
+                    # Clean up old uploads to prevent accumulation
+                    if os.path.exists(UPLOAD_DIR):
+                        for file in os.listdir(UPLOAD_DIR):
+                            file_path = os.path.join(UPLOAD_DIR, file)
+                            try:
+                                if os.path.isfile(file_path):
+                                    os.unlink(file_path)
+                            except Exception as e:
+                                st.warning(f"Could not remove old file {file}: {e}")
+                    
                     base_out = os.path.join(
                         UPLOAD_DIR, "output_" + os.path.basename(tfile.name))
                     
@@ -218,6 +235,10 @@ def main():
                                     )
                             else:
                                 st.error("Video file is empty (0 bytes)")
+                        elif final_video_path is None:
+                            # Video encoding failed, but processing succeeded
+                            st.warning("⚠️ Video encoding failed due to codec issues, but plate detection completed successfully!")
+                            st.info("📊 Results are still available below (crops and OCR)")
                         else:
                             st.error(f"Output video file not found at: {final_video_path}")
                     
