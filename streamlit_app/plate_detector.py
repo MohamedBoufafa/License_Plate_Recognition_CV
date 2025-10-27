@@ -724,8 +724,14 @@ def detect_video_with_tracking(
     # Direct MP4 output - try multiple codecs for best compatibility
     final_out = os.path.splitext(output_path)[0] + ".mp4"
     
-    # Try codecs in order of preference
-    codecs_to_try = ['avc1', 'h264', 'H264', 'X264', 'mp4v']
+    # Try codecs in order of preference (added more options for cloud compatibility)
+    codecs_to_try = [
+        'avc1', 'h264', 'H264', 'X264', 'mp4v',  # H.264 variants
+        'MJPG', 'MJPEG',  # Motion JPEG (works without H.264)
+        'DIVX', 'DIV3',   # DIVX codecs
+        'XVID',           # XVID codec
+        'WMV1', 'WMV2'    # Windows Media Video
+    ]
     out = None
     
     for codec in codecs_to_try:
@@ -738,11 +744,16 @@ def detect_video_with_tracking(
                 break
             else:
                 out.release()
-        except:
+        except Exception as e:
+            if status_callback:
+                status_callback(f"Codec {codec} failed: {str(e)}")
             continue
     
     if out is None or not out.isOpened():
-        raise ValueError(f"Failed to open video writer with any codec. Install FFmpeg: sudo apt install ffmpeg")
+        # Fallback: Continue without video writing
+        if status_callback:
+            status_callback("⚠️ Video encoding failed - continuing with detection only (no output video)")
+        out = None  # Set to None so we skip writing frames
 
     # Setup crop saving
     if save_crops and crops_dir:
@@ -1012,7 +1023,9 @@ def detect_video_with_tracking(
             cv2.putText(frame, f"Tracked: {len(active_tracks)} | Unique: {unique_plates_count}", 
                        (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
 
-            out.write(frame)
+            # Only write frame if video writer is available
+            if out is not None:
+                out.write(frame)
             processed += 1
             frame_idx += 1
         
@@ -1027,7 +1040,8 @@ def detect_video_with_tracking(
             )
 
     cap.release()
-    out.release()
+    if out is not None:
+        out.release()
     cv2.destroyAllWindows()
     
     # FINAL OCR PASS: Run OCR on all tracks one final time with their absolute best frames
@@ -1139,7 +1153,7 @@ def detect_video_with_tracking(
         print(f"Avg OCR Time/Plate:       {ocr_time/ocr_count*1000:.1f}ms")
     print("="*60 + "\n")
     
-    return final_out
+    return final_out if out is not None else None
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Webcam (OpenCV window)

@@ -218,6 +218,10 @@ def main():
                                     )
                             else:
                                 st.error("Video file is empty (0 bytes)")
+                        elif final_video_path is None:
+                            # Video encoding failed, but processing succeeded
+                            st.warning("⚠️ Video encoding failed due to codec issues, but plate detection completed successfully!")
+                            st.info("📊 Results are still available below (crops and OCR)")
                         else:
                             st.error(f"Output video file not found at: {final_video_path}")
                     
