@@ -149,6 +149,23 @@ def main():
                 stop_flag = Flag(value=st.session_state.stop_processing)
 
                 try:
+                    # Clean up old crops and results before processing
+                    if os.path.exists(CROPS_DIR):
+                        import shutil
+                        shutil.rmtree(CROPS_DIR)
+                        os.makedirs(CROPS_DIR, exist_ok=True)
+                        st.info("🧹 Cleared previous results...")
+                    
+                    # Clean up old uploads to prevent accumulation
+                    if os.path.exists(UPLOAD_DIR):
+                        for file in os.listdir(UPLOAD_DIR):
+                            file_path = os.path.join(UPLOAD_DIR, file)
+                            try:
+                                if os.path.isfile(file_path):
+                                    os.unlink(file_path)
+                            except Exception as e:
+                                st.warning(f"Could not remove old file {file}: {e}")
+                    
                     base_out = os.path.join(
                         UPLOAD_DIR, "output_" + os.path.basename(tfile.name))
                     
